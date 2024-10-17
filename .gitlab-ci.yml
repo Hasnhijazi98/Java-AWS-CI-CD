@@ -1,11 +1,21 @@
 stages:
   - build
+  - test
+
+image: openjdk:12-alpine
 
 build:
   stage: build
-  image: openjdk:12-alpine
   script:
     - ./gradlew build
   artifacts:
     paths:
       - ./build/libs
+
+smoke test:
+  stage: test
+  script:
+    - apk --no-cache add curl
+    - java -jar ./build/libs/cars-api.jar &
+    - sleep 30
+    - curl http://localhost:5000/statistics/age | grep "3"

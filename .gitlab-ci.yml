@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - deploy
 
 image: openjdk:12-alpine
 
@@ -19,3 +20,12 @@ smoke test:
     - java -jar ./build/libs/cars-api.jar &
     - sleep 30
     - curl http://localhost:5000/statistics/age | grep "3"
+
+aws deploy :
+  stage: deploy
+  image:
+    name: amazon/aws-cli
+    entrypoint: [""]
+  script:
+    - aws configure set region us-east-1
+    - aws s3 cp ./build/libs/cars-api.jar s3://$S3_INSTANCE/cars-api.jar || { echo "Upload failed"; exit 1; }

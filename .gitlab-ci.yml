@@ -26,6 +26,17 @@ smoke test:
     - sleep 30
     - curl http://localhost:5000/statistics/age | grep "3"
 
+TU:
+  stage: test
+  script:
+    - ./gradlew test
+  artifacts:
+    when: always
+    paths:
+      - build/reports/tests/test
+    reports:
+      junit: build/test-results/test
+
 aws deploy :
   stage: deploy
   image:

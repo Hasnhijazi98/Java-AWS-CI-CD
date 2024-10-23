@@ -35,7 +35,7 @@ TU:
     paths:
       - build/reports/tests/test
     reports:
-      junit: build/test-results/test
+      junit: build/test-results/test/*.xml
 
 aws deploy :
   stage: deploy
